@@ -1,0 +1,17 @@
+/* A logo PNG transparente deve aparecer diretamente sobre o fundo da hero. */
+.art-frame {
+  display: grid;
+  place-items: center;
+  overflow: visible;
+  clip-path: none;
+  background: transparent;
+}
+
+.art-frame::after {
+  display: none;
+}
+
+.art-frame img {
+  object-fit: contain;
+  filter: drop-shadow(0 20px 24px rgba(0, 0, 0, 0.42)) contrast(1.08) saturate(1.08);
+}
