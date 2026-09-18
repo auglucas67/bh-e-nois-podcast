@@ -3,9 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Lojinha oficial do BH É NÓIS Podcast." />
+    <meta name="description" content="Lojinha oficial do BH É NÓIS Podcast: produtos e edições especiais feitos em Belo Horizonte." />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href="https://bhenoispodcast.com.br/lojinha.html" />
-    <title>Lojinha — BH É NÓIS Podcast</title>
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Lojinha BH É NÓIS Podcast | Produtos oficiais" />
+    <meta property="og:description" content="Produtos e edições especiais do BH É NÓIS Podcast." />
+    <meta property="og:url" content="https://bhenoispodcast.com.br/lojinha.html" />
+    <meta property="og:site_name" content="BH É NÓIS Podcast" />
+    <title>Lojinha BH É NÓIS Podcast | Produtos oficiais</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -15,12 +22,13 @@
   <body>
     <header class="topbar"><a class="wordmark" href="index.html"><span>BH</span> É NÓIS</a><nav aria-label="Navegação principal"><a href="index.html#episodios">Episódios</a><a class="active" href="lojinha.html">Lojinha</a><a href="index.html#sobre">O podcast</a><a href="index.html#apoie">Apoie</a></nav><a class="header-cta" href="index.html#apoie">APOIAR O PODCAST ↗</a></header>
     <main>
-      <section class="store-hero"><p class="eyebrow"><i></i> BH É NÓIS APRESENTA</p><h1>VISTA<br /><em>O CORRE.</em></h1><p>Peças e edições especiais para quem carrega a cultura de BH no peito.</p></section>
+      <section class="store-hero"><p class="eyebrow"><i></i> BH É NÓIS APRESENTA</p><h1>VISTA<br /><em>O CORRE.</em></h1><p>Peças e edições especiais para quem carrega a cultura de BH no peito.</p><a class="store-hero-link" href="#produtos">VER PRODUTOS ↓</a></section>
       <div class="ticker" aria-hidden="true">BH É NÓIS · FEITO EM BH · BH É NÓIS · FEITO EM BH · BH É NÓIS · FEITO EM BH ·</div>
-      <section class="store section" aria-labelledby="store-title"><div class="store-heading"><div><p class="eyebrow"><i></i> PRÓXIMO DROP</p><h2 id="store-title">Lojinha</h2></div><p>Pagamento por Pix ou Mercado Pago. Produtos novos aparecem aqui assim que forem lançados.</p></div><div id="product-list" class="product-list" aria-live="polite"><article class="product-empty"><p>EM BREVE</p><h3>O primeiro drop<br />está chegando.</h3><a href="https://www.instagram.com/bhenois_podcast/" target="_blank" rel="noreferrer">ACOMPANHAR NO INSTAGRAM ↗</a></article></div></section>
-      <section class="store-note"><div><p class="eyebrow"><i></i> COMPRE COM SEGURANÇA</p><h2>Pix ou<br />Mercado Pago.</h2></div><p>Escolha sua forma de pagamento no produto. O link de compra e as instruções de Pix serão disponibilizados em cada lançamento.</p></section>
+      <section id="produtos" class="store section" aria-labelledby="store-title"><div class="store-heading"><div><p class="eyebrow"><i></i> DROPS DISPONÍVEIS</p><h2 id="store-title">Lojinha</h2></div><p>Produtos oficiais do BH É NÓIS. Compre por Pix ou Mercado Pago quando o drop estiver disponível.</p></div><div id="product-list" class="product-list" aria-live="polite"><p class="store-loading">Carregando produtos…</p></div></section>
+      <section class="store-note"><div><p class="eyebrow"><i></i> COMPRA DIRETA</p><h2>Pix ou<br />Mercado Pago.</h2></div><div><p>Escolha o produto e a forma de pagamento. A confirmação é feita na plataforma segura escolhida para cada item.</p><p class="store-note-small">Dúvidas sobre tamanhos ou entrega? Fale com a produção pelo Instagram.</p><a class="button outline" href="https://www.instagram.com/bhenois_podcast/" target="_blank" rel="noreferrer">FALAR COM A PRODUÇÃO ↗</a></div></section>
     </main>
     <footer><a class="wordmark" href="index.html"><span>BH</span> É NÓIS</a><p>© <span id="year"></span>, Todos os direitos reservados — BH É NÓIS Podcast. Feito em Belo Horizonte, MG.</p><div><a href="https://www.youtube.com/@bhenoispodcast3485" target="_blank" rel="noreferrer" aria-label="YouTube">▶</a><a href="https://open.spotify.com/show/0udvVrNKLKnNVz8PeTeCID" target="_blank" rel="noreferrer" aria-label="Spotify">●</a><a href="https://www.instagram.com/bhenois_podcast/" target="_blank" rel="noreferrer" aria-label="Instagram">◎</a></div></footer>
+    <dialog id="purchase-dialog" class="purchase-dialog" aria-labelledby="purchase-title"><button class="dialog-close" type="button" aria-label="Fechar">×</button><p class="eyebrow"><i></i> FINALIZAR PEDIDO</p><h2 id="purchase-title">Produto</h2><p id="purchase-price" class="purchase-price"></p><p id="purchase-description" class="purchase-description"></p><div id="purchase-actions" class="purchase-actions"></div><p class="purchase-help">O pagamento e a entrega são confirmados pela produção conforme as condições do produto.</p></dialog>
     <script src="loja.js"></script>
   </body>
 </html>

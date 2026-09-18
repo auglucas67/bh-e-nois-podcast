@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Gestão da Lojinha | BH É NÓIS Podcast</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="lojinha.css" />
+  </head>
+  <body>
+    <header class="topbar"><a class="wordmark" href="lojinha.html"><span>BH</span> É NÓIS</a><nav aria-label="Navegação do painel"><a href="lojinha.html">Ver Lojinha</a><a href="index.html">Site principal</a></nav></header>
+    <main class="store section admin-store">
+      <p class="eyebrow"><i></i> USO DA PRODUÇÃO</p>
+      <h1 class="admin-title">Gerenciar<br /><em>produtos.</em></h1>
+      <p class="admin-intro">Cadastre cada produto abaixo. Ao terminar, baixe o catálogo e substitua o arquivo <strong>products.json</strong> no repositório do site. A alteração entra no ar automaticamente.</p>
+      <div class="admin-layout">
+        <form id="product-form" class="product-form">
+          <h2 id="form-title">Novo produto</h2>
+          <input id="product-id" type="hidden" />
+          <label>Nome do produto<input id="product-name" required maxlength="70" placeholder="Ex.: Camiseta BH É NÓIS preta" /></label>
+          <label>Preço (R$)<input id="product-price" required type="number" min="0.01" step="0.01" placeholder="89,90" /></label>
+          <label>Descrição<textarea id="product-description" required maxlength="180" placeholder="Tamanho, material ou detalhes importantes."></textarea></label>
+          <label>Imagem do produto (URL)<input id="product-image" type="url" placeholder="https://..." /></label>
+          <label>Estoque<input id="product-stock" required type="number" min="0" step="1" value="1" /></label>
+          <label>Link de pagamento Mercado Pago<input id="product-mercado-pago" type="url" placeholder="https://mpago.la/..." /></label>
+          <label>Link de pagamento Pix<input id="product-pix" type="url" placeholder="Link de cobrança Pix" /></label>
+          <label class="check-label"><input id="product-active" type="checkbox" checked /> Publicar este produto na lojinha</label>
+          <div class="form-actions"><button class="button primary" type="submit">SALVAR PRODUTO</button><button id="clear-form" class="button outline" type="button">LIMPAR</button></div>
+        </form>
+        <section class="catalog-manager" aria-labelledby="catalog-title"><div class="catalog-header"><div><p class="eyebrow"><i></i> CATÁLOGO ATUAL</p><h2 id="catalog-title">Produtos</h2></div><span id="catalog-count">0 itens</span></div><div id="admin-products" class="admin-products" aria-live="polite"></div><div class="publish-box"><h3>Publicar catálogo</h3><p>Baixe o arquivo atualizado e, no GitHub, substitua o arquivo <strong>products.json</strong>. Não publique os links de pagamento antes de conferi-los.</p><div class="form-actions"><button id="download-catalog" class="button primary" type="button">BAIXAR CATÁLOGO</button><a class="button outline" href="https://github.com/auglucas67/bh-e-nois-podcast/upload/main" target="_blank" rel="noreferrer">ABRIR GITHUB ↗</a></div></div></section>
+      </div>
+    </main>
+    <script src="admin-loja.js"></script>
+  </body>
+</html>
