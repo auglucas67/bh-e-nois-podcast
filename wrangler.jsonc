@@ -3,7 +3,10 @@
   "name": "bh-e-nois-podcast",
   "main": "worker.js",
   "compatibility_date": "2026-09-18",
-  "assets": { "directory": "dist" },
+  "assets": {
+    "directory": "dist",
+    "run_worker_first": ["/sitemap.xml"]
+  },
   "d1_databases": [
     {
       "binding": "DB",
