@@ -1,14 +1,23 @@
 # BH É NÓIS Podcast
 
-Site do BH É NÓIS Podcast. Os episódios são atualizados automaticamente pelo feed público do YouTube.
+Site oficial do BH É NÓIS Podcast. Os episódios são atualizados automaticamente pelo feed público do YouTube e a lojinha usa Cloudflare Workers/D1 com checkout hospedado pelo Asaas.
 
-## Publicar no Render
+## Publicação no Cloudflare
 
-1. Envie esta pasta para um repositório no GitHub.
-2. No Render, crie um **Web Service** e conecte o repositório.
-3. Selecione Node, use `npm start` como **Start Command** e deixe o **Build Command** vazio.
-4. Publique. O Render fornece a variável `PORT` automaticamente.
+1. O Worker usa `worker.js` e os arquivos estáticos gerados em `dist/`.
+2. Rode `npm run build` para atualizar `dist/`.
+3. A vinculação D1 `DB` deve apontar para o banco definido em `wrangler.jsonc`.
+4. Cadastre os segredos `ASAAS_API_KEY` e `ASAAS_WEBHOOK_TOKEN` diretamente no Cloudflare; nunca os grave no GitHub.
+5. No Asaas, configure o webhook de cobranças para `https://bhenoispodcast.com.br/api/webhooks/asaas` usando o mesmo token secreto.
 
-## Antes da publicação
+## Administração e pagamentos
 
-Depois que a campanha do Apoia.se estiver criada, substitua o link `https://apoia.se/` pelo endereço da campanha na seção de apoio.
+- O painel `/admin-lojinha.html` é protegido pelo Cloudflare Access e valida o JWT novamente no Worker.
+- Produtos, fotos compactadas, estoque e pedidos são mantidos no D1.
+- O preço enviado ao Asaas é sempre calculado no servidor, nunca aceito do navegador do cliente.
+- O checkout permite somente PIX e cartão de crédito. O cartão é informado na página segura do Asaas.
+- O estoque é reservado ao criar a cobrança e devolvido automaticamente em falha, cancelamento ou estorno notificado.
+
+## Testes
+
+Execute `node --test test/store-api.test.mjs`. Os testes usam banco e Asaas simulados, sem criar cobranças reais.

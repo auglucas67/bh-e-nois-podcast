@@ -1,3 +1,5 @@
+import { handleStoreApi } from './store-api.js';
+
 const CHANNEL_ID = 'UCWZ83QknfPlj8dPKdx9NImw';
 const CACHE_SECONDS = 15 * 60;
 let episodeCache = { expiresAt: 0, episodes: [] };
@@ -32,6 +34,7 @@ export default {
         return Response.json({ error: 'Não foi possível atualizar os episódios agora.' }, { status: 503 });
       }
     }
+    if (url.pathname.startsWith('/api/')) return handleStoreApi(request, env, url);
     return env.ASSETS.fetch(request);
   },
 };

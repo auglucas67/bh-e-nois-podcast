@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 
 const root = process.cwd();
 const output = resolve(root, 'dist');
-const files = ['index.html', 'lojinha.html', 'admin-lojinha.html', 'robots.txt', 'sitemap.xml', 'styles.css', 'admin-access.css', 'logo-fix.css', 'episodes-real.css', 'support-tiers.css', 'lojinha.css', 'admin-loja.js', 'script.js', 'loja.js', 'logo-bh-e-nois.png', 'products.json', 'supporters.json'];
+const files = ['index.html', 'lojinha.html', 'admin-lojinha.html', 'pedido.html', 'robots.txt', 'sitemap.xml', 'styles.css', 'admin-access.css', 'logo-fix.css', 'episodes-real.css', 'support-tiers.css', 'lojinha.css', 'admin-loja.js', 'pedido.js', 'script.js', 'loja.js', 'logo-bh-e-nois.png', 'supporters.json'];
 
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });

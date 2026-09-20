@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin-lojinha.html
+Disallow: /pedido.html
+Disallow: /api/
 
 Sitemap: https://bhenoispodcast.com.br/sitemap.xml

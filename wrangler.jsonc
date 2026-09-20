@@ -3,5 +3,17 @@
   "name": "bh-e-nois-podcast",
   "main": "worker.js",
   "compatibility_date": "2026-09-18",
-  "assets": { "directory": "dist" }
+  "assets": { "directory": "dist" },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "bh-e-nois-lojinha",
+      "database_id": "5641b781-26bf-4e5e-9180-97beb82eb771"
+    }
+  ],
+  "vars": {
+    "ASAAS_MODE": "production",
+    "ACCESS_TEAM_DOMAIN": "soft-credit-4151.cloudflareaccess.com",
+    "ACCESS_AUD": "2f5f7acecb834141fd51c632f0f8c46a13f967056765469014fcd08c0c12d184"
+  }
 }

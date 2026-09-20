@@ -16,7 +16,8 @@
     <main class="store section admin-store">
       <p class="eyebrow"><i></i> USO DA PRODUÇÃO</p>
       <h1 class="admin-title">Gerenciar<br /><em>produtos.</em></h1>
-      <p class="admin-intro">Cadastre cada produto abaixo. Ao terminar, baixe o catálogo e substitua o arquivo <strong>products.json</strong> no repositório do site. A alteração entra no ar automaticamente.</p>
+      <p class="admin-intro">Cadastre produtos, envie fotos e acompanhe pedidos. Ao salvar, a lojinha é atualizada automaticamente.</p>
+      <p id="admin-status" class="admin-status" role="status" aria-live="polite">Conectando ao catálogo…</p>
       <div class="admin-layout">
         <form id="product-form" class="product-form">
           <h2 id="form-title">Novo produto</h2>
@@ -24,15 +25,18 @@
           <label>Nome do produto<input id="product-name" required maxlength="70" placeholder="Ex.: Camiseta BH É NÓIS preta" /></label>
           <label>Preço (R$)<input id="product-price" required type="number" min="0.01" step="0.01" placeholder="89,90" /></label>
           <label>Descrição<textarea id="product-description" required maxlength="180" placeholder="Tamanho, material ou detalhes importantes."></textarea></label>
-          <label>Imagem do produto (URL)<input id="product-image" type="url" placeholder="https://..." /></label>
+          <label>Foto do produto (JPEG, PNG ou WebP)<input id="product-image" type="file" accept="image/jpeg,image/png,image/webp" /></label>
+          <p id="image-current" class="field-hint"></p>
+          <label class="check-label"><input id="remove-image" type="checkbox" /> Remover foto atual</label>
           <label>Estoque<input id="product-stock" required type="number" min="0" step="1" value="1" /></label>
-          <label>Link de pagamento Mercado Pago<input id="product-mercado-pago" type="url" placeholder="https://mpago.la/..." /></label>
-          <label>Link de pagamento Pix<input id="product-pix" type="url" placeholder="Link de cobrança Pix" /></label>
+          <label>Entrega<select id="product-delivery"><option value="pickup">Retirada em Belo Horizonte</option><option value="shipping">Envio com frete fixo</option></select></label>
+          <label id="shipping-label" hidden>Frete (R$)<input id="product-shipping" type="number" min="0" step="0.01" value="0" /></label>
           <label class="check-label"><input id="product-active" type="checkbox" checked /> Publicar este produto na lojinha</label>
           <div class="form-actions"><button class="button primary" type="submit">SALVAR PRODUTO</button><button id="clear-form" class="button outline" type="button">LIMPAR</button></div>
         </form>
-        <section class="catalog-manager" aria-labelledby="catalog-title"><div class="catalog-header"><div><p class="eyebrow"><i></i> CATÁLOGO ATUAL</p><h2 id="catalog-title">Produtos</h2></div><span id="catalog-count">0 itens</span></div><div id="admin-products" class="admin-products" aria-live="polite"></div><div class="publish-box"><h3>Publicar catálogo</h3><p>Baixe o arquivo atualizado e, no GitHub, substitua o arquivo <strong>products.json</strong>. Não publique os links de pagamento antes de conferi-los.</p><div class="form-actions"><button id="download-catalog" class="button primary" type="button">BAIXAR CATÁLOGO</button><a class="button outline" href="https://github.com/auglucas67/bh-e-nois-podcast/upload/main" target="_blank" rel="noreferrer">ABRIR GITHUB ↗</a></div></div></section>
+        <section class="catalog-manager" aria-labelledby="catalog-title"><div class="catalog-header"><div><p class="eyebrow"><i></i> CATÁLOGO ATUAL</p><h2 id="catalog-title">Produtos</h2></div><span id="catalog-count">0 itens</span></div><div id="admin-products" class="admin-products" aria-live="polite"></div><div class="publish-box"><h3>Pagamentos Asaas</h3><p id="payment-state">Verificando integração…</p><p>O preço e o frete são definidos aqui. No checkout, o cliente escolhe Pix ou cartão e paga na página segura do Asaas.</p></div></section>
       </div>
+      <section class="orders-panel" aria-labelledby="orders-title"><div class="catalog-header"><div><p class="eyebrow"><i></i> ACOMPANHAMENTO</p><h2 id="orders-title">Pedidos</h2></div><button id="refresh-orders" class="button outline" type="button">ATUALIZAR</button></div><div id="admin-orders" class="admin-products" aria-live="polite"><p>Carregando pedidos…</p></div></section>
     </main>
     <script src="admin-loja.js"></script>
   </body>

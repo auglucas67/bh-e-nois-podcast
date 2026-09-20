@@ -1,49 +1,120 @@
 const form = document.getElementById('product-form');
-const productsRoot = document.getElementById('admin-products');
-let products = [];
-
+const status = document.getElementById('admin-status');
+const list = document.getElementById('admin-products');
+const ordersRoot = document.getElementById('admin-orders');
 const fields = {
-  id: document.getElementById('product-id'), name: document.getElementById('product-name'), price: document.getElementById('product-price'),
-  description: document.getElementById('product-description'), image: document.getElementById('product-image'), stock: document.getElementById('product-stock'),
-  mercadoPagoUrl: document.getElementById('product-mercado-pago'), pixUrl: document.getElementById('product-pix'), active: document.getElementById('product-active')
+  id: document.getElementById('product-id'), name: document.getElementById('product-name'),
+  price: document.getElementById('product-price'), description: document.getElementById('product-description'),
+  image: document.getElementById('product-image'), removeImage: document.getElementById('remove-image'),
+  stock: document.getElementById('product-stock'), delivery: document.getElementById('product-delivery'),
+  shipping: document.getElementById('product-shipping'), active: document.getElementById('product-active'),
 };
-const newId = () => `bh-${Date.now().toString(36)}`;
-const clearForm = () => { form.reset(); fields.id.value = ''; fields.stock.value = '1'; fields.active.checked = true; document.getElementById('form-title').textContent = 'Novo produto'; };
-const money = (value) => Number(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+let products = [];
+const money = (cents) => (cents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const notice = (message, failed = false) => { status.textContent = message; status.classList.toggle('error', failed); };
+
+async function api(path, options = {}) {
+  const response = await fetch(path, { credentials: 'same-origin', cache: 'no-store', ...options });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || `Erro ${response.status}`);
+  return data;
+}
+
+function deliveryFields() {
+  document.getElementById('shipping-label').hidden = fields.delivery.value !== 'shipping';
+}
+
+function resetForm() {
+  form.reset(); fields.id.value = ''; fields.stock.value = '1'; fields.active.checked = true;
+  fields.shipping.value = '0'; document.getElementById('image-current').textContent = '';
+  document.getElementById('form-title').textContent = 'Novo produto'; deliveryFields();
+}
+
+function edit(item) {
+  fields.id.value = item.id; fields.name.value = item.name;
+  fields.price.value = (item.priceCents / 100).toFixed(2);
+  fields.description.value = item.description; fields.stock.value = item.stock;
+  fields.delivery.value = item.deliveryType; fields.shipping.value = (item.shippingCents / 100).toFixed(2);
+  fields.active.checked = item.active; fields.image.value = ''; fields.removeImage.checked = false;
+  document.getElementById('image-current').textContent = item.imageUrl ? 'Foto atual salva. Escolha outra para substituir.' : 'Sem foto cadastrada.';
+  document.getElementById('form-title').textContent = 'Editar produto'; deliveryFields();
+  form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
 function render() {
   document.getElementById('catalog-count').textContent = `${products.length} ${products.length === 1 ? 'item' : 'itens'}`;
-  productsRoot.replaceChildren();
-  if (!products.length) { productsRoot.innerHTML = '<p class="admin-empty">Nenhum produto cadastrado ainda.</p>'; return; }
-  products.forEach((product) => {
+  list.replaceChildren();
+  if (!products.length) { const empty = document.createElement('p'); empty.className = 'admin-empty'; empty.textContent = 'Nenhum produto cadastrado ainda.'; list.append(empty); return; }
+  products.forEach((item) => {
     const row = document.createElement('article'); row.className = 'admin-product';
-    const title = document.createElement('div'); title.innerHTML = `<p>${money(product.price)} · ${product.stock} em estoque</p><h3></h3><small></small>`;
-    title.querySelector('h3').textContent = product.name;
-    title.querySelector('small').textContent = product.active ? 'PUBLICADO' : 'RASCUNHO';
+    const info = document.createElement('div');
+    const price = document.createElement('p'); price.textContent = `${money(item.priceCents)} · ${item.stock} em estoque`;
+    const name = document.createElement('h3'); name.textContent = item.name;
+    const state = document.createElement('small'); state.textContent = item.active ? 'PUBLICADO' : 'RASCUNHO';
+    info.append(price, name, state);
     const actions = document.createElement('div');
-    const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'button outline'; edit.textContent = 'EDITAR'; edit.addEventListener('click', () => editProduct(product.id));
-    const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'admin-delete'; remove.textContent = 'REMOVER'; remove.addEventListener('click', () => { products = products.filter((item) => item.id !== product.id); render(); });
-    actions.append(edit, remove); row.append(title, actions); productsRoot.append(row);
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'button outline'; button.textContent = 'EDITAR'; button.addEventListener('click', () => edit(item));
+    actions.append(button); row.append(info, actions); list.append(row);
   });
 }
 
-function editProduct(id) {
-  const product = products.find((item) => item.id === id); if (!product) return;
-  Object.entries(fields).forEach(([key, input]) => { if (key === 'active') input.checked = Boolean(product.active); else input.value = product[key] ?? ''; });
-  document.getElementById('form-title').textContent = 'Editar produto'; form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+async function loadCatalog() {
+  try {
+    const data = await api('/api/admin/products');
+    products = data.products; render();
+    document.getElementById('payment-state').textContent = data.paymentsEnabled ? 'Pix e cartão de crédito ativos no Asaas.' : 'Pagamentos aguardando a chave de produção do Asaas. Produtos podem ser cadastrados agora.';
+    notice('Catálogo conectado. Salvar publica as alterações na hora.');
+  } catch (cause) { notice(`${cause.message} Recarregue a página após entrar pelo acesso administrativo.`, true); }
 }
 
-form.addEventListener('submit', (event) => {
+async function imageData(file) {
+  if (!file) return null;
+  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) throw new Error('Use uma foto JPEG, PNG ou WebP.');
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, 960 / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement('canvas'); canvas.width = Math.round(bitmap.width * scale); canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height); bitmap.close();
+  let data = canvas.toDataURL('image/webp', 0.78);
+  if (data.length > 700_000) data = canvas.toDataURL('image/webp', 0.55);
+  if (data.length > 700_000) throw new Error('A foto ainda está grande. Use uma imagem menor.');
+  return data;
+}
+
+form.addEventListener('submit', async (event) => {
   event.preventDefault();
-  const product = { id: fields.id.value || newId(), name: fields.name.value.trim(), price: Number(fields.price.value), description: fields.description.value.trim(), image: fields.image.value.trim(), stock: Number(fields.stock.value), mercadoPagoUrl: fields.mercadoPagoUrl.value.trim(), pixUrl: fields.pixUrl.value.trim(), active: fields.active.checked };
-  const index = products.findIndex((item) => item.id === product.id); if (index >= 0) products[index] = product; else products.push(product);
-  clearForm(); render();
+  const button = form.querySelector('[type="submit"]'); button.disabled = true; notice('Salvando produto…');
+  try {
+    const payload = {
+      id: fields.id.value || undefined, name: fields.name.value.trim(), description: fields.description.value.trim(),
+      priceCents: Math.round(Number(fields.price.value) * 100), stock: Number(fields.stock.value),
+      deliveryType: fields.delivery.value, shippingCents: Math.round(Number(fields.shipping.value || 0) * 100),
+      active: fields.active.checked, removeImage: fields.removeImage.checked,
+      imageData: await imageData(fields.image.files[0]),
+    };
+    await api('/api/admin/products', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    resetForm(); await loadCatalog(); notice('Produto salvo e atualizado na lojinha.');
+  } catch (cause) { notice(cause.message, true); }
+  finally { button.disabled = false; }
 });
 
-document.getElementById('clear-form').addEventListener('click', clearForm);
-document.getElementById('download-catalog').addEventListener('click', () => {
-  const blob = new Blob([JSON.stringify({ products }, null, 2)], { type: 'application/json' });
-  const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'products.json'; link.click(); URL.revokeObjectURL(link.href);
-});
+async function loadOrders() {
+  try {
+    const { orders } = await api('/api/admin/orders'); ordersRoot.replaceChildren();
+    if (!orders.length) { const empty = document.createElement('p'); empty.className = 'admin-empty'; empty.textContent = 'Ainda não há pedidos.'; ordersRoot.append(empty); return; }
+    orders.forEach((order) => {
+      const row = document.createElement('article'); row.className = 'admin-product';
+      const box = document.createElement('div');
+      const amount = document.createElement('p'); amount.textContent = `${money(order.amount_cents)} · ${order.payment_method} · ${order.status}`;
+      const name = document.createElement('h3'); name.textContent = order.product_name;
+      const buyer = document.createElement('small'); buyer.textContent = `${order.buyer_name} · ${order.buyer_email} · ${order.buyer_phone}`;
+      box.append(amount, name, buyer);
+      if (order.address_json) { const address = document.createElement('p'); address.textContent = `Entrega: ${order.address_json}`; box.append(address); }
+      row.append(box); ordersRoot.append(row);
+    });
+  } catch (cause) { ordersRoot.textContent = cause.message; }
+}
 
-fetch('products.json').then((response) => response.ok ? response.json() : { products: [] }).then((catalog) => { products = Array.isArray(catalog.products) ? catalog.products : []; render(); }).catch(render);
+fields.delivery.addEventListener('change', deliveryFields);
+document.getElementById('clear-form').addEventListener('click', resetForm);
+document.getElementById('refresh-orders').addEventListener('click', loadOrders);
+deliveryFields(); loadCatalog(); loadOrders();
