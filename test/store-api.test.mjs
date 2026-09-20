@@ -25,6 +25,7 @@ const DB = {
 const env = {
   DB, ACCESS_TEAM_DOMAIN: 'example.cloudflareaccess.com', ACCESS_AUD: 'test-audience',
   ASAAS_MODE: 'production', ASAAS_API_KEY: '$aact_prod_test', ASAAS_WEBHOOK_TOKEN: 'a-very-long-webhook-token-for-testing',
+  MELHOR_ENVIO_TOKEN: 'shipping-token', SHIPPING_ORIGIN_POSTAL_CODE: '31810600',
 };
 const keys = await webcrypto.subtle.generateKey({ name: 'RSASSA-PKCS1-v1_5', modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: 'SHA-256' }, true, ['sign', 'verify']);
 const jwk = await webcrypto.subtle.exportKey('jwk', keys.publicKey); jwk.kid = 'test-key';
@@ -36,6 +37,7 @@ const adminToken = `${head}.${body}.${Buffer.from(signature).toString('base64url
 const calls = [];
 globalThis.fetch = async (url, options = {}) => {
   if (url.endsWith('/cdn-cgi/access/certs')) return Response.json({ keys: [jwk] });
+  if (url.includes('/shipment/calculate')) return Response.json([{ id: 1, name: 'PAC', custom_price: '23.50', custom_delivery_time: 5, company: { name: 'Correios' } }]);
   calls.push({ url, payload: JSON.parse(options.body) });
   if (url.endsWith('/customers')) return Response.json({ id: 'cus_test' });
   if (url.endsWith('/payments')) return Response.json({ id: 'pay_test', invoiceUrl: 'https://www.asaas.com/i/test' });
@@ -60,13 +62,20 @@ test('product, Asaas checkout, private order and webhook flow', async () => {
   const imageData = `data:image/png;base64,${Buffer.from('small-image').toString('base64')}`;
   const saved = await (await invoke('/api/admin/products', 'POST', {
     name: 'Camiseta BH', description: 'Camiseta oficial', priceCents: 8000, stock: 2,
-    active: true, deliveryType: 'pickup', shippingCents: 0, imageData,
+    active: true, deliveryType: 'pickup', imagesData: [imageData],
   }, headers)).json();
   assert.match(saved.id, /^[a-f0-9-]{36}$/);
   const catalog = await (await invoke('/api/products')).json();
   assert.equal(catalog.products[0].priceCents, 8000);
   assert.equal(catalog.paymentsEnabled, true);
-  assert.equal((await invoke(`/api/products/${saved.id}/image`)).status, 200);
+  assert.equal((await invoke(`/api/products/${saved.id}/images/0`)).status, 200);
+
+  const shipped = await (await invoke('/api/admin/products', 'POST', {
+    name: 'Moletom BH', description: 'Moletom oficial', priceCents: 15000, stock: 1, active: true,
+    deliveryType: 'shipping', weightKg: 0.8, widthCm: 25, heightCm: 8, lengthCm: 35,
+  }, headers)).json();
+  const quote = await (await invoke('/api/shipping/quote', 'POST', { productId: shipped.id, postalCode: '30110012' }, { 'CF-Connecting-IP': '203.0.113.11' })).json();
+  assert.equal(quote.quotes[0].priceCents, 2350);
 
   const checkout = await (await invoke('/api/checkout', 'POST', {
     productId: saved.id, paymentMethod: 'PIX', buyer: { name: 'Comprador Teste', email: 'teste@example.com', phone: '31999999999', cpfCnpj: '12345678909' },

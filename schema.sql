@@ -7,6 +7,10 @@ CREATE TABLE IF NOT EXISTS products (
   active INTEGER NOT NULL DEFAULT 0 CHECK (active IN (0, 1)),
   delivery_type TEXT NOT NULL DEFAULT 'pickup' CHECK (delivery_type IN ('pickup', 'shipping')),
   shipping_cents INTEGER NOT NULL DEFAULT 0 CHECK (shipping_cents >= 0),
+  weight_kg REAL NOT NULL DEFAULT 0.3,
+  width_cm REAL NOT NULL DEFAULT 16,
+  height_cm REAL NOT NULL DEFAULT 4,
+  length_cm REAL NOT NULL DEFAULT 24,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -16,6 +20,16 @@ CREATE TABLE IF NOT EXISTS product_images (
   mime TEXT NOT NULL,
   data_base64 TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS product_gallery (
+  id TEXT PRIMARY KEY,
+  product_id TEXT NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+  position INTEGER NOT NULL CHECK (position BETWEEN 0 AND 9),
+  mime TEXT NOT NULL,
+  data_base64 TEXT NOT NULL,
+  UNIQUE(product_id, position)
+);
+CREATE INDEX IF NOT EXISTS product_gallery_product ON product_gallery(product_id, position);
 
 CREATE TABLE IF NOT EXISTS orders (
   id TEXT PRIMARY KEY,
@@ -46,3 +60,10 @@ CREATE TABLE IF NOT EXISTS checkout_attempts (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS checkout_attempts_ip ON checkout_attempts(ip, created_at);
+
+CREATE TABLE IF NOT EXISTS shipping_attempts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ip TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS shipping_attempts_ip ON shipping_attempts(ip, created_at);

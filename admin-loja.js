@@ -7,7 +7,9 @@ const fields = {
   price: document.getElementById('product-price'), description: document.getElementById('product-description'),
   image: document.getElementById('product-image'), removeImage: document.getElementById('remove-image'),
   stock: document.getElementById('product-stock'), delivery: document.getElementById('product-delivery'),
-  shipping: document.getElementById('product-shipping'), active: document.getElementById('product-active'),
+  weight: document.getElementById('product-weight'), width: document.getElementById('product-width'),
+  height: document.getElementById('product-height'), length: document.getElementById('product-length'),
+  active: document.getElementById('product-active'),
 };
 let products = [];
 const money = (cents) => (cents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -26,7 +28,8 @@ function deliveryFields() {
 
 function resetForm() {
   form.reset(); fields.id.value = ''; fields.stock.value = '1'; fields.active.checked = true;
-  fields.shipping.value = '0'; document.getElementById('image-current').textContent = '';
+  fields.weight.value = '0.30'; fields.width.value = '16'; fields.height.value = '4'; fields.length.value = '24';
+  document.getElementById('image-current').textContent = ''; document.getElementById('description-count').textContent = '0/4000';
   document.getElementById('form-title').textContent = 'Novo produto'; deliveryFields();
 }
 
@@ -34,9 +37,11 @@ function edit(item) {
   fields.id.value = item.id; fields.name.value = item.name;
   fields.price.value = (item.priceCents / 100).toFixed(2);
   fields.description.value = item.description; fields.stock.value = item.stock;
-  fields.delivery.value = item.deliveryType; fields.shipping.value = (item.shippingCents / 100).toFixed(2);
+  fields.delivery.value = item.deliveryType; fields.weight.value = item.weightKg; fields.width.value = item.widthCm;
+  fields.height.value = item.heightCm; fields.length.value = item.lengthCm;
   fields.active.checked = item.active; fields.image.value = ''; fields.removeImage.checked = false;
-  document.getElementById('image-current').textContent = item.imageUrl ? 'Foto atual salva. Escolha outra para substituir.' : 'Sem foto cadastrada.';
+  document.getElementById('image-current').textContent = item.imageUrls.length ? `${item.imageUrls.length} foto(s) salva(s). Escolher novas fotos substitui o carrossel atual.` : 'Sem fotos cadastradas.';
+  document.getElementById('description-count').textContent = `${item.description.length}/4000`;
   document.getElementById('form-title').textContent = 'Editar produto'; deliveryFields();
   form.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -63,6 +68,7 @@ async function loadCatalog() {
     const data = await api('/api/admin/products');
     products = data.products; render();
     document.getElementById('payment-state').textContent = data.paymentsEnabled ? 'Pix e cartão de crédito ativos no Asaas.' : 'Pagamentos aguardando a chave de produção do Asaas. Produtos podem ser cadastrados agora.';
+    document.getElementById('shipping-state').textContent = data.shippingEnabled ? 'Cotação automática de frete ativa.' : 'Cotação aguardando o token da transportadora.';
     notice('Catálogo conectado. Salvar publica as alterações na hora.');
   } catch (cause) { notice(`${cause.message} Recarregue a página após entrar pelo acesso administrativo.`, true); }
 }
@@ -80,6 +86,12 @@ async function imageData(file) {
   return data;
 }
 
+async function imagesData(files) {
+  const selected = [...files];
+  if (selected.length > 10) throw new Error('Escolha no máximo 10 fotos.');
+  return Promise.all(selected.map(imageData));
+}
+
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
   const button = form.querySelector('[type="submit"]'); button.disabled = true; notice('Salvando produto…');
@@ -87,9 +99,10 @@ form.addEventListener('submit', async (event) => {
     const payload = {
       id: fields.id.value || undefined, name: fields.name.value.trim(), description: fields.description.value.trim(),
       priceCents: Math.round(Number(fields.price.value) * 100), stock: Number(fields.stock.value),
-      deliveryType: fields.delivery.value, shippingCents: Math.round(Number(fields.shipping.value || 0) * 100),
-      active: fields.active.checked, removeImage: fields.removeImage.checked,
-      imageData: await imageData(fields.image.files[0]),
+      deliveryType: fields.delivery.value, weightKg: Number(fields.weight.value), widthCm: Number(fields.width.value),
+      heightCm: Number(fields.height.value), lengthCm: Number(fields.length.value),
+      active: fields.active.checked, removeImages: fields.removeImage.checked,
+      imagesData: await imagesData(fields.image.files),
     };
     await api('/api/admin/products', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     resetForm(); await loadCatalog(); notice('Produto salvo e atualizado na lojinha.');
@@ -115,6 +128,7 @@ async function loadOrders() {
 }
 
 fields.delivery.addEventListener('change', deliveryFields);
+fields.description.addEventListener('input', () => { document.getElementById('description-count').textContent = `${fields.description.value.length}/4000`; });
 document.getElementById('clear-form').addEventListener('click', resetForm);
 document.getElementById('refresh-orders').addEventListener('click', loadOrders);
 deliveryFields(); loadCatalog(); loadOrders();
