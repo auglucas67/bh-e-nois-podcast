@@ -3,20 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="BH É NÓIS Podcast: conversas, cultura e histórias de Belo Horizonte. Assista aos episódios no YouTube e ouça no Spotify." />
+    <meta name="description" content="Site oficial do BH É NÓIS Podcast, também buscado como BH é nois. Conversas, cultura e histórias de Belo Horizonte no YouTube e Spotify." />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <meta name="google-site-verification" content="e70Jh9JiCRDFIf7W_clZ9_4vjKG6vvpV2Oo3nM3hy78" />
     <link rel="canonical" href="https://bhenoispodcast.com.br/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://bhenoispodcast.com.br/" />
+    <link rel="alternate" hreflang="x-default" href="https://bhenoispodcast.com.br/" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="BH É NÓIS Podcast | Podcast de Belo Horizonte" />
     <meta property="og:description" content="Conversas, cultura e histórias de Belo Horizonte. Assista no YouTube e ouça no Spotify." />
     <meta property="og:url" content="https://bhenoispodcast.com.br/" />
     <meta property="og:site_name" content="BH É NÓIS Podcast" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="https://bhenoispodcast.com.br/logo-bh-e-nois.png" />
+    <meta property="og:image:alt" content="Logo oficial do BH É NÓIS Podcast" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="BH É NÓIS Podcast | Podcast de Belo Horizonte" />
     <meta name="twitter:description" content="Conversas, cultura e histórias de Belo Horizonte." />
-    <title>BH É NÓIS Podcast | Podcast de Belo Horizonte</title>
+    <meta name="twitter:image" content="https://bhenoispodcast.com.br/logo-bh-e-nois.png" />
+    <title>BH É NÓIS Podcast — Site Oficial | Belo Horizonte</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -25,7 +30,12 @@
             "@type": "Organization",
             "@id": "https://bhenoispodcast.com.br/#organization",
             "name": "BH É NÓIS Podcast",
+            "alternateName": ["BH É NÓIS", "BH É NOIS Podcast", "BH E NOIS Podcast"],
             "url": "https://bhenoispodcast.com.br/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://bhenoispodcast.com.br/logo-bh-e-nois.png"
+            },
             "sameAs": [
               "https://www.youtube.com/@bhenoispodcast3485",
               "https://open.spotify.com/show/0udvVrNKLKnNVz8PeTeCID",
@@ -37,14 +47,15 @@
             "@id": "https://bhenoispodcast.com.br/#website",
             "url": "https://bhenoispodcast.com.br/",
             "name": "BH É NÓIS Podcast",
-            "alternateName": ["BH É NÓIS", "BH E NOIS Podcast"],
+            "alternateName": ["BH É NÓIS", "BH É NOIS Podcast", "BH E NOIS Podcast", "BH é nois"],
             "inLanguage": "pt-BR",
             "publisher": { "@id": "https://bhenoispodcast.com.br/#organization" }
           },
           {
             "@type": "PodcastSeries",
+            "@id": "https://bhenoispodcast.com.br/#podcast",
             "name": "BH É NÓIS Podcast",
-            "alternateName": "BH É NÓIS",
+            "alternateName": ["BH É NÓIS", "BH É NOIS Podcast", "BH E NOIS Podcast"],
             "url": "https://bhenoispodcast.com.br/",
             "description": "Conversas, cultura e histórias de Belo Horizonte.",
             "inLanguage": "pt-BR",
@@ -53,6 +64,44 @@
               "https://www.youtube.com/@bhenoispodcast3485",
               "https://open.spotify.com/show/0udvVrNKLKnNVz8PeTeCID",
               "https://www.instagram.com/bhenois_podcast/"
+            ]
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://bhenoispodcast.com.br/#webpage",
+            "url": "https://bhenoispodcast.com.br/",
+            "name": "BH É NÓIS Podcast — Site Oficial",
+            "isPartOf": { "@id": "https://bhenoispodcast.com.br/#website" },
+            "about": { "@id": "https://bhenoispodcast.com.br/#podcast" },
+            "inLanguage": "pt-BR"
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "O que é o BH É NÓIS Podcast?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "O BH É NÓIS Podcast é um podcast de Belo Horizonte com conversas sobre cultura, histórias, ideias e pessoas que movimentam a cidade."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Onde assistir ao BH É NÓIS Podcast?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Os episódios podem ser assistidos no canal oficial do BH É NÓIS Podcast no YouTube e ouvidos no Spotify."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "BH É NÓIS e BH é nois são o mesmo podcast?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sim. BH É NÓIS é o nome oficial do podcast, que também pode ser pesquisado como BH é nois ou BH e nois podcast."
+                }
+              }
             ]
           }
         ]
@@ -66,6 +115,7 @@
     <link rel="stylesheet" href="episodes-real.css" />
     <link rel="stylesheet" href="support-tiers.css" />
     <link rel="stylesheet" href="admin-access.css" />
+    <link rel="stylesheet" href="seo.css" />
   </head>
   <body>
     <header class="topbar">
@@ -85,7 +135,7 @@
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
           <p class="eyebrow"><i></i> BH É NÓIS PODCAST · DIRETO DE BELO HORIZONTE</p>
-          <h1 id="hero-title">A conversa<br /><em>é nossa.</em></h1>
+          <h1 id="hero-title"><span class="sr-only">BH É NÓIS Podcast — </span>A conversa<br /><em>é nossa.</em></h1>
           <p class="hero-text">Histórias reais, ideias sem filtro e a energia de quem faz acontecer. Chega mais: BH é nóis.</p>
           <div class="hero-actions">
             <a class="button primary" href="https://open.spotify.com/show/0udvVrNKLKnNVz8PeTeCID" target="_blank" rel="noreferrer"><span>▶</span> OUVIR NO SPOTIFY</a>
@@ -132,7 +182,16 @@
 
       <section id="sobre" class="about section">
         <div class="big-statement">BH É NÓIS<br /><span>DE VERDADE.</span></div>
-        <div class="about-copy"><p class="eyebrow"><i></i> SOBRE O PODCAST</p><h2>Uma roda de conversa com a cara de BH.</h2><p>O BH É NÓIS Podcast abre espaço para gente, cultura, ideias e histórias que merecem ser ouvidas. Sem roteiro engessado: aqui a resenha é sincera e todo mundo tem voz.</p><a class="button outline" href="https://www.instagram.com/bhenois_podcast/" target="_blank" rel="noreferrer">SEGUIR NO INSTAGRAM ↗</a></div>
+        <div class="about-copy"><p class="eyebrow"><i></i> SOBRE O PODCAST</p><h2>Uma roda de conversa com a cara de BH.</h2><p>O BH É NÓIS Podcast abre espaço para gente, cultura, ideias e histórias que merecem ser ouvidas. Sem roteiro engessado: aqui a resenha é sincera e todo mundo tem voz.</p><p>Se você procurou por “BH é nois”, “BH e nois podcast” ou pelo podcast de Belo Horizonte, chegou ao site oficial. Aqui estão os episódios, os canais e todas as novidades da produção.</p><a class="button outline" href="https://www.instagram.com/bhenois_podcast/" target="_blank" rel="noreferrer">SEGUIR NO INSTAGRAM ↗</a></div>
+      </section>
+
+      <section class="seo-faq section" aria-labelledby="faq-title">
+        <div><p class="eyebrow"><i></i> PERGUNTAS FREQUENTES</p><h2 id="faq-title">BH É NÓIS<br /><em>SEM DÚVIDA.</em></h2></div>
+        <dl>
+          <div><dt>O que é o BH É NÓIS Podcast?</dt><dd>É um podcast de Belo Horizonte com conversas sobre cultura, histórias, ideias e pessoas que movimentam a cidade.</dd></div>
+          <div><dt>Onde assistir ao BH É NÓIS Podcast?</dt><dd>Assista aos episódios no canal oficial do BH É NÓIS Podcast no YouTube ou ouça no Spotify.</dd></div>
+          <div><dt>BH É NÓIS e BH é nois são o mesmo podcast?</dt><dd>Sim. BH É NÓIS é o nome oficial, também pesquisado como BH é nois ou BH e nois podcast.</dd></div>
+        </dl>
       </section>
 
       <section id="apoie" class="support section" aria-labelledby="support-title">
