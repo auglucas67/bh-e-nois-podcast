@@ -2,6 +2,13 @@
 
 Site oficial do BH É NÓIS Podcast. Os episódios são atualizados automaticamente pelo feed público do YouTube e a lojinha usa Cloudflare Workers/D1, checkout hospedado pelo Asaas e cotação de frete pelo Melhor Envio.
 
+## Episódios e SEO
+
+- `/episodios` lista automaticamente os vídeos mais recentes do canal.
+- Cada vídeo recebe uma página indexável em `/episodios/{videoId}`, com canonical, metadados sociais e dados estruturados `PodcastEpisode`/`VideoObject`.
+- O Worker gera `/sitemap.xml` dinamicamente, incluindo os episódios mais recentes e suas datas de publicação.
+- Os cards da página inicial apontam primeiro para as páginas do próprio domínio; nelas, o visitante pode assistir ao vídeo incorporado ou abrir o YouTube.
+
 ## Publicação no Cloudflare
 
 1. O Worker usa `worker.js` e os arquivos estáticos gerados em `dist/`.

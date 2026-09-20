@@ -1,0 +1,45 @@
+:root { --yellow:#f5ca14; --ink:#101015; --off:#f6f4ed; --line:#302f31; --mono:"DM Mono",monospace; --display:"Oswald",sans-serif; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; background:var(--ink); color:var(--off); font-family:var(--mono); }
+header, footer { min-height:78px; padding:20px clamp(24px,6vw,90px); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:30px; }
+footer { border-top:1px solid var(--line); border-bottom:0; }
+.brand { color:var(--off); font:600 1.3rem var(--display); letter-spacing:.04em; text-decoration:none; }
+.brand b { color:var(--yellow); font-size:1.7rem; }
+nav { margin-left:auto; display:flex; gap:25px; }
+nav a, footer a { color:var(--off); font-size:.72rem; letter-spacing:.08em; text-decoration:none; }
+nav a:hover, footer a:hover { color:var(--yellow); }
+footer p { margin-left:auto; color:#999; font-size:.68rem; }
+.episodes-hero { min-height:480px; padding:clamp(75px,10vw,135px) clamp(24px,9vw,145px); background:radial-gradient(circle at 75% 30%,#292a35,var(--ink) 58%); }
+.episodes-hero > p, .kicker { color:#aaa; font-size:.72rem; letter-spacing:.13em; }
+.episodes-hero > p::before, .kicker::before { content:""; display:inline-block; width:8px; height:8px; margin-right:10px; background:var(--yellow); }
+h1, h2 { margin:0; font-family:var(--display); line-height:.95; text-transform:uppercase; }
+.episodes-hero h1 { margin:25px 0; font-size:clamp(4.5rem,10vw,10rem); }
+.episodes-hero h1 em { color:var(--yellow); font-style:normal; }
+.episodes-hero > div { max-width:680px; color:#ccc; line-height:1.8; }
+.episode-list { padding:clamp(55px,8vw,110px) clamp(24px,9vw,145px); display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; background:var(--off); color:var(--ink); }
+.episode-card { min-width:0; border:1px solid #c8c5ba; background:#fff; }
+.episode-card a { display:block; color:var(--ink); text-decoration:none; height:100%; }
+.episode-card img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; }
+.episode-card div { padding:24px; }
+.episode-card time { color:#777; font-size:.66rem; text-transform:uppercase; }
+.episode-card h2 { margin:13px 0; font-size:clamp(1.6rem,2.4vw,2.35rem); overflow-wrap:anywhere; }
+.episode-card p { color:#555; font-size:.82rem; line-height:1.65; }
+.episode-card span { color:#715c00; font-weight:500; font-size:.72rem; }
+.episode-card:hover { border-color:var(--yellow); transform:translateY(-4px); transition:.2s; }
+.episode-page { padding:clamp(55px,8vw,105px) clamp(24px,9vw,145px); }
+.back { color:var(--yellow); font-size:.72rem; text-decoration:none; }
+.episode-page .kicker { margin-top:65px; }
+.episode-page > h1 { max-width:1100px; margin:18px 0 20px; font-size:clamp(3.6rem,8vw,8rem); overflow-wrap:anywhere; }
+.episode-page > time { color:#aaa; font-size:.75rem; }
+.video { max-width:1100px; margin:48px 0; aspect-ratio:16/9; background:#000; }
+.video iframe { width:100%; height:100%; border:0; }
+.episode-copy { max-width:850px; }
+.episode-copy h2 { color:var(--yellow); font-size:2.4rem; }
+.episode-copy p { color:#d2d0c8; line-height:1.8; white-space:pre-line; }
+.cta { display:inline-block; margin-top:18px; padding:16px 20px; background:var(--yellow); color:var(--ink); font-size:.75rem; text-decoration:none; }
+.error { min-height:65vh; padding:12vw; }
+.error h1 { font-size:clamp(3rem,8vw,7rem); }
+.error a { color:var(--yellow); }
+@media(max-width:900px) { .episode-list{grid-template-columns:1fr 1fr} }
+@media(max-width:620px) { nav{gap:12px;flex-wrap:wrap;justify-content:flex-end}.episode-list{grid-template-columns:1fr}footer{align-items:flex-start;flex-direction:column}footer p{margin:0}.episodes-hero{min-height:400px} }

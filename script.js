@@ -15,9 +15,9 @@ function formatDate(date) { return new Intl.DateTimeFormat('pt-BR', { day: '2-di
 function escapeHtml(value) { const element = document.createElement('span'); element.textContent = value; return element.innerHTML; }
 function episodeCard(episode) {
   const card = document.createElement('a');
-  card.className = 'episode real-episode'; card.href = episode.url; card.target = '_blank'; card.rel = 'noreferrer';
+  card.className = 'episode real-episode'; card.href = episode.url;
   const title = escapeHtml(episode.title);
-  card.innerHTML = `<img src="${episode.thumbnail}" alt="Capa: ${title}" /><span class="play">▶</span><div class="episode-info"><p>${formatDate(episode.published)}</p><h3>${title}</h3><span>ASSISTIR NO YOUTUBE ↗</span></div>`;
+  card.innerHTML = `<img src="${episode.thumbnail}" alt="Capa: ${title}" /><span class="play">▶</span><div class="episode-info"><p>${formatDate(episode.published)}</p><h3>${title}</h3><span>VER EPISÓDIO →</span></div>`;
   return card;
 }
 fetch('/api/episodes').then((response) => response.ok ? response.json() : Promise.reject()).then(({ episodes }) => { if (episodes?.length) episodeGrid.replaceChildren(...episodes.slice(0, 3).map(episodeCard)); }).catch(() => {});
